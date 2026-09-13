@@ -235,6 +235,14 @@
   function renderEstudar(){
     let html = `
       <div class="hero"><h1>Estudar por matéria</h1><p>Escolhe uma matéria para veres os temas e praticares.</p></div>
+      <div class="cta-exam" id="start-study">
+        <div class="txt">
+          <h3>Começar sessão de estudo</h3>
+          <p>Perguntas aleatórias de todas as matérias, com correção imediata</p>
+        </div>
+        <div class="go" aria-hidden="true">→</div>
+      </div>
+      <div class="section-label">Ou escolhe uma matéria</div>
       <div class="materia-grid">
         ${MATERIAS.map(m => {
           const s = materiaStats(m.id);
@@ -249,6 +257,9 @@
       </div>
     `;
     root.innerHTML = html;
+    document.getElementById('start-study').addEventListener('click', () => {
+      startSession(shuffle(ALL), { label:'Estudo geral', backView:{ view:null } });
+    });
     MATERIAS.forEach(m => {
       document.getElementById('mcard-'+m.slug).addEventListener('click', () => go('materia', { materiaId:m.id }));
     });

@@ -7,7 +7,6 @@
     passwordSha256: 'b4c65ac0a72f3ba206fc6b601725fbdecea1e07042f7b1c1e174dd1ec140698c',
   };
   const SESSION_KEY = 'instrutor_auth_session_v1';
-  const SESSION_MAX_AGE = 8 * 60 * 60 * 1000;
   const authScreen = document.getElementById('auth-screen');
   const app = document.getElementById('app');
   const form = document.getElementById('login-form');
@@ -35,8 +34,8 @@
 
   function sessionIsValid(){
     try{
-      const session = JSON.parse(sessionStorage.getItem(SESSION_KEY));
-      return session && Date.now() - session.createdAt < SESSION_MAX_AGE;
+      const session = JSON.parse(localStorage.getItem(SESSION_KEY));
+      return session && session.authenticated === true;
     }catch(e){
       return false;
     }
@@ -53,13 +52,13 @@
       passwordInput.focus();
       return;
     }
-    sessionStorage.setItem(SESSION_KEY, JSON.stringify({ createdAt: Date.now() }));
+    localStorage.setItem(SESSION_KEY, JSON.stringify({ authenticated: true, createdAt: Date.now() }));
     form.reset();
     showApp();
   });
 
   document.getElementById('logout-btn').addEventListener('click', () => {
-    sessionStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem(SESSION_KEY);
     showLogin();
   });
 

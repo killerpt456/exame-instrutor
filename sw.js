@@ -1,4 +1,4 @@
-const CACHE_NAME = 'exame-instrutor-v1';
+const CACHE_NAME = 'exame-instrutor-v2';
 const APP_SHELL = [
   './',
   './index.html',
