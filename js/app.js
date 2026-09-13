@@ -324,7 +324,7 @@
     SESSION = {
       queue: qs.map(q=>q.uid),
       idx: 0,
-      answered: null,      // letter chosen for current question, or null
+      answers: {},         // uid -> chosen letter
       correctSoFar: 0,
       total: qs.length,
       label: opts.label || '',
@@ -339,7 +339,7 @@
     const q = byUid[uid];
     const meta = materiaMeta(q.materia);
     const keys = optionKeys(q);
-    const chosen = SESSION.answered;
+    const chosen = SESSION.answers[uid] || null;
 
     let optsHtml = keys.map(k => {
       let cls = 'option';
@@ -381,7 +381,8 @@
         ${explain}
       </div>
       <div class="session-actions">
-        ${chosen ? `<button class="btn btn-primary btn-block" id="next-btn">${SESSION.idx+1 < SESSION.total ? 'Próxima pergunta' : 'Concluir sessão'}</button>` : ''}
+        <button class="btn" id="prev-btn" ${SESSION.idx===0?'disabled':''}>Pergunta anterior</button>
+        <button class="btn btn-primary" id="next-btn" ${chosen?'':'disabled'}>${SESSION.idx+1 < SESSION.total ? 'Próxima pergunta' : 'Concluir sessão'}</button>
       </div>
     `;
 
@@ -390,9 +391,9 @@
       keys.forEach(k => {
         root.querySelector(`.option[data-k="${k}"]`).addEventListener('click', () => selectOption(k));
       });
-    } else {
-      document.getElementById('next-btn').addEventListener('click', nextQuestion);
     }
+    document.getElementById('prev-btn').addEventListener('click', previousQuestion);
+    document.getElementById('next-btn').addEventListener('click', nextQuestion);
   }
 
   function selectOption(k){
@@ -401,14 +402,19 @@
     const correct = k === q.correta;
     recordAnswer(uid, correct);
     if(correct) SESSION.correctSoFar++;
-    SESSION.answered = k;
+    SESSION.answers[uid] = k;
+    renderSession();
+  }
+
+  function previousQuestion(){
+    if(SESSION.idx === 0){ return; }
+    SESSION.idx--;
     renderSession();
   }
 
   function nextQuestion(){
     if(SESSION.idx+1 >= SESSION.total){ return endSession(); }
     SESSION.idx++;
-    SESSION.answered = null;
     renderSession();
   }
 
