@@ -1,4 +1,4 @@
-const CACHE_NAME = 'exame-instrutor-v2';
+const CACHE_NAME = 'exame-instrutor-v3';
 const APP_SHELL = [
   './',
   './index.html',
@@ -6,7 +6,8 @@ const APP_SHELL = [
   './data/questions.js',
   './js/app.js',
   './js/auth.js',
-  './manifest.webmanifest'
+  './manifest.webmanifest',
+  './assets/icon.svg'
 ];
 
 self.addEventListener('install', event => {
