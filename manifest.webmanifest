@@ -1,0 +1,12 @@
+{
+  "name": "Exame Instrutor",
+  "short_name": "Exame Instrutor",
+  "description": "Preparação offline para o exame de instrutor de condução.",
+  "lang": "pt-PT",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#10151b",
+  "theme_color": "#10151b",
+  "icons": []
+}
